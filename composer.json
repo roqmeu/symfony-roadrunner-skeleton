@@ -1,0 +1,63 @@
+{
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "name": "roqmeu/symfony-roadrunner-skeleton",
+    "description": "Symfony RoadRunner skeleton",
+    "require": {
+        "php": "^8.3",
+        "ext-protobuf": "*",
+        "ext-json": "*",
+        "baldinof/roadrunner-bundle": "^3.1",
+        "doctrine/dbal": "^3.9",
+        "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/doctrine-migrations-bundle": "^3.3",
+        "doctrine/migrations": "^3.8",
+        "symfony/amqp-messenger": "7.2.*",
+        "symfony/cache": "7.2.*",
+        "symfony/console": "7.2.*",
+        "symfony/doctrine-messenger": "7.2.*",
+        "symfony/dotenv": "7.2.*",
+        "symfony/framework-bundle": "7.2.*",
+        "symfony/http-client": "7.2.*",
+        "symfony/http-foundation": "7.2.*",
+        "symfony/twig-bundle": "7.2.*",
+        "symfony/lock": "7.2.*",
+        "symfony/mailer": "7.2.*",
+        "symfony/messenger": "7.2.*",
+        "symfony/monolog-bundle": "^3.10",
+        "symfony/security-bundle": "7.2.*",
+        "symfony/serializer": "7.2.*",
+        "symfony/runtime": "7.2.*",
+        "symfony/validator": "7.2.*",
+        "symfony/yaml": "7.2.*"
+    },
+    "require-dev": {
+        "phpstan/phpstan-doctrine": "^1.5",
+        "phpstan/phpstan-strict-rules": "^1.6",
+        "phpstan/phpstan-symfony": "^1.4",
+        "roave/security-advisories": "dev-latest",
+        "symfony/stopwatch": "7.2.*"
+    },
+    "config": {
+        "optimize-autoloader": false,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/runtime": true,
+            "*/*": false
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "App\\Migration\\": "migration/"
+        }
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    }
+}

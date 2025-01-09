@@ -1,0 +1,20 @@
+doctrine:
+  dbal:
+    default_connection: default
+    connections:
+      default:
+        driver: 'pdo_pgsql'
+        server_version: '15'
+        charset: utf8
+
+        host: '%env(DATABASE_HOST)%'
+        port: '%env(DATABASE_PORT)%'
+        user: '%env(DATABASE_USER)%'
+        password: '%env(DATABASE_PASSWORD)%'
+        dbname: '%env(DATABASE_NAME)%'
+
+        schema_filter: '~^(?!messenger_messages)~'
+
+doctrine_migrations:
+  migrations_paths:
+    'App\Migration': '/opt/app/migration'

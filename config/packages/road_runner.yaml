@@ -1,0 +1,7 @@
+baldinof_road_runner:
+  kernel_reboot:
+    strategy: [on_exception, max_jobs]
+    allowed_exceptions:
+      - Symfony\Component\HttpKernel\Exception\HttpExceptionInterface
+    max_jobs: 1000
+    max_jobs_dispersion: 0.1

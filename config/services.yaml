@@ -1,0 +1,14 @@
+parameters:
+  env(APP_NAME): 'skeleton'
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  App\:
+    resource: '../src/'
+    exclude:
+      - '../src/**/{Dto,ValueObject,Entity,Model,Event,Exception,Helper}/**/*.php'
+      - '../src/**/UseCase/*/*UseCase.php'
+      - '../src/Kernel.php'

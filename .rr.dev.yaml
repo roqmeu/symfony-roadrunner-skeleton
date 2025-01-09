@@ -1,0 +1,20 @@
+version: "3"
+
+rpc:
+  listen: unix:///opt/socket/rr-rpc-dev.sock
+
+server:
+  command: "php bin/server --silent"
+  relay: unix:///opt/socket/rr-relay-dev.sock
+
+http:
+  address: 0.0.0.0:80
+  access_logs: true
+  fcgi:
+    address: tcp://0.0.0.0:9000
+  pool:
+    num_workers: 1
+
+logs:
+  mode: development
+  level: debug

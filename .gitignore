@@ -1,0 +1,12 @@
+.idea
+.DS_Store
+
+###> symfony/framework-bundle ###
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+*.local
+*.local.*
+!/**/.gitkeep

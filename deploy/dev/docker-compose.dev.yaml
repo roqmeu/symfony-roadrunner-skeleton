@@ -1,0 +1,34 @@
+name: "symfony-roadrunner-skeleton-dev"
+
+volumes:
+  sock: {}
+
+services:
+  angie:
+    build:
+      context: ../../.
+      dockerfile: ./deploy/dev/angie/Dockerfile
+    ports:
+      - 10086:80
+    volumes:
+      - ../../public:/usr/share/angie/html:ro
+      - ./angie/angie.dev.conf:/etc/angie/angie.conf:ro
+    depends_on:
+      - php
+    restart: no
+
+  php:
+    user: www-data
+    build:
+      context: ../../.
+      dockerfile: ./deploy/dev/php/Dockerfile
+    environment:
+      APP_ENV: dev
+      APP_DEPLOYMENT: dev
+      PHP_IDE_CONFIG: "serverName=symfony-roadrunner-skeleton.loc"
+    ports:
+      - 10084:80
+    volumes:
+      - ../../.:/opt/app:cached
+    restart: no
+    command: bash -c "rr serve -c .rr.dev.yaml"

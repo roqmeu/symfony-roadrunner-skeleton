@@ -1,1 +1,1 @@
-# symfony-roadrunner-skeleton
+# Symfony RoadRunner skeleton
