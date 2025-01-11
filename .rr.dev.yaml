@@ -1,11 +1,11 @@
 version: "3"
 
 rpc:
-  listen: unix:///opt/socket/rr-rpc-dev.sock
+  listen: unix:///opt/socket/rr-rpc.sock
 
 server:
   command: "php bin/server --silent"
-  relay: unix:///opt/socket/rr-relay-dev.sock
+  relay: unix:///opt/socket/rr-relay.sock
 
 http:
   address: 0.0.0.0:80
@@ -14,6 +14,15 @@ http:
     address: tcp://0.0.0.0:9000
   pool:
     num_workers: 1
+
+kv:
+  memory:
+    driver: memory
+    config: { }
+  memcached:
+    driver: memcached
+    config:
+      addr: "/var/run/shared/memcached/memcached.sock"
 
 logs:
   mode: development

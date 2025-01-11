@@ -1,2 +1,10 @@
 framework:
   cache:
+    pools:
+      roadrunner.memory.cache:
+        adapter: cache.adapter.roadrunner.kv_memory
+      roadrunner.memcached.cache:
+        adapter: cache.adapter.roadrunner.kv_memcached
+      symfony.memcached.cache:
+        adapter: cache.adapter.memcached
+        provider: 'memcached:///var/run/shared/memcached/memcached.sock'

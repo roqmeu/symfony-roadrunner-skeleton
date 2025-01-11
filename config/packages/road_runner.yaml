@@ -5,3 +5,7 @@ baldinof_road_runner:
       - Symfony\Component\HttpKernel\Exception\HttpExceptionInterface
     max_jobs: 1000
     max_jobs_dispersion: 0.1
+  kv:
+    storages:
+      - memory
+      - memcached

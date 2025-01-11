@@ -30,5 +30,20 @@ services:
       - 10084:80
     volumes:
       - ../../.:/opt/app:cached
+      - sock:/var/run/shared
     restart: no
+    depends_on:
+      - memcached
     command: bash -c "rr serve -c .rr.dev.yaml"
+
+  memcached:
+    user: root
+    build:
+      context: ./memcached
+      dockerfile: ./Dockerfile
+    volumes:
+      - sock:/var/run/shared
+    restart: no
+    environment:
+      MEMORY_LIMIT: 32
+      THREADS: 2
