@@ -15,6 +15,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.3",
         "doctrine/migrations": "^3.8",
         "spiral/roadrunner-kv": "^4.3",
+        "spiral/roadrunner-jobs": "^4.6",
         "symfony/amqp-messenger": "7.2.*",
         "symfony/cache": "7.2.*",
         "symfony/console": "7.2.*",
@@ -32,7 +33,8 @@
         "symfony/serializer": "7.2.*",
         "symfony/runtime": "7.2.*",
         "symfony/validator": "7.2.*",
-        "symfony/yaml": "7.2.*"
+        "symfony/yaml": "7.2.*",
+        "roqmeu/roadrunner-messenger": "^1.0"
     },
     "require-dev": {
         "phpstan/phpstan-doctrine": "^1.5",
@@ -60,5 +62,11 @@
     },
     "conflict": {
         "symfony/symfony": "*"
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/roqmeu/roadrunner-messenger.git"
+        }
+    ]
 }

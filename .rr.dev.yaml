@@ -5,7 +5,11 @@ rpc:
 
 server:
   command: "php bin/server --silent"
-  relay: unix:///opt/socket/rr-relay.sock
+  relay: pipes
+
+pool:
+  debug: true
+  num_workers: 2
 
 http:
   address: 0.0.0.0:80
@@ -14,6 +18,16 @@ http:
     address: tcp://0.0.0.0:9000
   pool:
     num_workers: 1
+
+jobs:
+  consume: [ "memory" ]
+  pipelines:
+    memory:
+      driver: memory
+      config: { }
+  pool:
+    num_workers: 1
+    command: "bin/console messenger:consume --all --silent"
 
 kv:
   memory:

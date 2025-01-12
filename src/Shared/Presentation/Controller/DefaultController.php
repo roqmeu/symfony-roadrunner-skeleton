@@ -4,20 +4,25 @@ declare(strict_types=1);
 
 namespace App\Shared\Presentation\Controller;
 
+use App\Shared\Presentation\Messenger\FailedEvent;
+use App\Shared\Presentation\Messenger\SimpleEvent;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route(path: '')]
 class DefaultController extends AbstractController
 {
     public function __construct(
+        readonly private MessageBusInterface $messageBus,
         readonly private LoggerInterface $logger,
-        private readonly CacheItemPoolInterface $roadrunnerMemoryCache,
-        private readonly CacheItemPoolInterface $roadrunnerMemcachedCache,
-        private readonly CacheItemPoolInterface $symfonyMemcachedCache,
+        readonly private CacheItemPoolInterface $roadrunnerMemoryCache,
+        readonly private CacheItemPoolInterface $roadrunnerMemcachedCache,
+        readonly private CacheItemPoolInterface $symfonyMemcachedCache,
     ) {
     }
 
@@ -32,6 +37,8 @@ class DefaultController extends AbstractController
     #[Route(path: '/twig', name: 'app.shared.twig', methods: ['GET'])]
     public function twig(): Response
     {
+        $this->logger->info('Received app.shared.twig');
+
         return $this->render(
             'index.html.twig', [
                 'page_title' => 'I am title!',
@@ -42,6 +49,8 @@ class DefaultController extends AbstractController
     #[Route(path: '/cache', name: 'app.shared.cache', methods: ['GET'])]
     public function cache(): Response
     {
+        $this->logger->info('Received app.shared.cache');
+
         $response = '';
         $this->roadrunnerMemoryCache->clear();
 
@@ -114,5 +123,21 @@ class DefaultController extends AbstractController
         $response .= 'nativeMemcachedCache -> ' . microtime(true) - $time . '<br/>';
 
         return new Response($response);
+    }
+
+    #[Route(path: '/message', name: 'app.shared.message', methods: ['GET'])]
+    public function message(): Response
+    {
+        $this->logger->info('Received app.shared.message');
+
+        $this->messageBus->dispatch(new SimpleEvent('Message!'));
+        $this->messageBus->dispatch(new SimpleEvent('Delayed message!'), [new DelayStamp(5000)]);
+
+        $this->messageBus->dispatch(new FailedEvent('Failed message!'));
+        $this->messageBus->dispatch(new FailedEvent('Failed delayed message!'), [new DelayStamp(5000)]);
+
+        $this->logger->info('Dispatch app.shared.message');
+
+        return new Response('Send!');
     }
 }

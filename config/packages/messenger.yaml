@@ -1,0 +1,37 @@
+framework:
+  messenger:
+    failure_transport: failed
+
+    serializer:
+      default_serializer: messenger.transport.igbinary_serializer
+
+    transports:
+      failed:
+        dsn: 'in-memory://'
+        retry_strategy:
+          max_retries: 0
+      memory:
+        dsn: 'roadrunner://'
+        options:
+          queue_name: memory
+        retry_strategy:
+          max_retries: 4
+          delay: 4000
+          multiplier: 2
+          jitter: 0.2
+
+    routing:
+      App\Shared\Presentation\Messenger\SimpleEvent: memory
+      App\Shared\Presentation\Messenger\FailedEvent: memory
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  messenger.transport.igbinary_serializer:
+    class: Roqmeu\Symfony\Messenger\Bridge\RoadRunner\Serialization\IgbinarySerializer
+
+  messenger.transport.roadrunner.factory:
+    class: Roqmeu\Symfony\Messenger\Bridge\RoadRunner\Transport\RoadRunnerTransportFactory
+    tags: [messenger.transport_factory]
