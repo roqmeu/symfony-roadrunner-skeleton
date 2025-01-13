@@ -4,12 +4,11 @@ rpc:
   listen: unix:///opt/socket/rr-rpc.sock
 
 server:
-  command: "php bin/server --silent"
+  command: "php bin/http --silent"
   relay: pipes
 
 pool:
   debug: true
-  num_workers: 2
 
 http:
   address: 0.0.0.0:80
@@ -19,15 +18,23 @@ http:
   pool:
     num_workers: 1
 
+amqp:
+  addr: amqp://guest:guest@rabbitmq:5672
+
 jobs:
-  consume: [ "memory" ]
+  num_pollers: 1
+  consume: [ "amqp" ]
   pipelines:
-    memory:
-      driver: memory
-      config: { }
+    amqp:
+      driver: amqp
+      config:
+        queue: skeleton_queue
+        exchange: skeleton_exchange
+        exchange_type: direct
+        routing_key: skeleton_queue
   pool:
     num_workers: 1
-    command: "bin/console messenger:consume --all --silent"
+    command: "bin/jobs messenger:consume roadrunner --silent"
 
 kv:
   memory:

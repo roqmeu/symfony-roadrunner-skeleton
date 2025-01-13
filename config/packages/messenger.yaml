@@ -10,10 +10,29 @@ framework:
         dsn: 'in-memory://'
         retry_strategy:
           max_retries: 0
-      memory:
+
+      roadrunner:
         dsn: 'roadrunner://'
         options:
-          queue_name: memory
+          queue_name: amqp # ... use amqp pipeline from roadrunner jobs
+        retry_strategy:
+          max_retries: 4
+          delay: 4000
+          multiplier: 2
+          jitter: 0.2
+
+      amqp:
+        dsn: 'amqp://guest:guest@rabbitmq:5672'
+        options:
+          auto_setup: false
+          verify: false
+          exchange:
+            name: 'skeleton_exchange'
+            type: direct
+            default_publish_routing_key: 'skeleton_queue'
+          queues:
+            'skeleton_queue':
+              binding_keys: [ 'skeleton_queue' ]
         retry_strategy:
           max_retries: 4
           delay: 4000
@@ -21,8 +40,8 @@ framework:
           jitter: 0.2
 
     routing:
-      App\Shared\Presentation\Messenger\SimpleEvent: memory
-      App\Shared\Presentation\Messenger\FailedEvent: memory
+      App\Shared\Presentation\Messenger\SimpleEvent: roadrunner
+      App\Shared\Presentation\Messenger\FailedEvent: roadrunner
 
 services:
   _defaults:

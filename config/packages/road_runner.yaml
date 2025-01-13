@@ -9,3 +9,12 @@ baldinof_road_runner:
     storages:
       - memory
       - memcached
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  # It's necessary to be able to run the Symfony Console without RoadRunner.
+  Spiral\Goridge\RPC\RPCInterface:
+    factory: ['App\Util\RoadRunner\SwitchableRPCFactory', 'fromEnvironment']
